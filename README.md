@@ -1,4 +1,4 @@
-![Screenshot (74)](https://github.com/reynoldgithub/Jarkom-Modul-5-IT22-2023/assets/87769109/fb25367e-cec8-46d9-a1c0-b6a848c5021c)![Screenshot (73)](https://github.com/reynoldgithub/Jarkom-Modul-5-IT22-2023/assets/87769109/e264131f-c666-48cc-a069-70881b9af214)# Jarkom-Modul-5-IT22-2023
+# Jarkom-Modul-5-IT22-2023
 
 # First Configuration
 ## Subnetting and Routing
@@ -368,7 +368,7 @@ iptables -A INPUT -p tcp --dport 22 -s 192.244.8.0/22 -j ACCEPT
 iptables -A INPUT -p tcp --dport 22 -j DROP
 ```
 Memberikan batasan source ip dengan subnet GrobeForest!
-[Uploading Screenshot (74).png…]()
+![Screenshot (74)](https://github.com/reynoldgithub/Jarkom-Modul-5-IT22-2023/assets/87769109/ea0f25f5-4bd8-4147-9196-27c2141e2023)
 
 # Soal 5
 > Selain itu, akses menuju WebServer hanya diperbolehkan saat jam kerja yaitu Senin-Jumat pada pukul 08.00-16.00.
