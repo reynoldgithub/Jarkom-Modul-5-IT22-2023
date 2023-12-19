@@ -1,8 +1,9 @@
-# Jarkom-Modul-5-IT22-2023
+![Screenshot (74)](https://github.com/reynoldgithub/Jarkom-Modul-5-IT22-2023/assets/87769109/fb25367e-cec8-46d9-a1c0-b6a848c5021c)![Screenshot (73)](https://github.com/reynoldgithub/Jarkom-Modul-5-IT22-2023/assets/87769109/e264131f-c666-48cc-a069-70881b9af214)# Jarkom-Modul-5-IT22-2023
 
 # First Configuration
 ## Subnetting and Routing
 ![image](https://github.com/reynoldgithub/Jarkom-Modul-5-IT22-2023/assets/87769109/1c69ce9e-744b-4bcd-b150-ebb576af8eb4)
+
 Berikut network configuration untuk setiap node
 - Revolter
 ```
@@ -323,4 +324,61 @@ options {
   listen-on-v6 {any;};
 };
 ```
+
+# Soal 1
+> Agar topologi yang kalian buat dapat mengakses keluar, kalian diminta untuk mengkonfigurasi Aura menggunakan iptables, tetapi tidak ingin menggunakan MASQUERADE
+Problem ini bisa diselesaikan denguan menggunakan iptables dengan option SNAT sehingga tidak merewrite ip pengirim. Berikut contoh implementasi pada node Aura
+```bash
+ETH0IP="$(ip addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')"
+echo $ETH0IP
+iptables -t nat -A POSTROUTING -o eth0 -j SNAT --to-source "$ETH0IP" -s 192.244.0.0/20
+```
+
+# Soal 2
+> Kalian diminta untuk melakukan drop semua TCP dan UDP kecuali port 8080 pada TCP.
+```
+iptables -A INPUT -p tcp --dport 8080 -j ACCEPT
+```
+Command ini digunakan untuk membuka akses tcp dengan destination port 8080
+```
+iptables -A INPUT -p tcp -j DROP
+iptables -A INPUT -p udp -j DROP
+```
+Command ini digunakan untuk menutup seluruh port tcp udp
+![Screenshot (72)](https://github.com/reynoldgithub/Jarkom-Modul-5-IT22-2023/assets/87769109/a1863117-64c7-4f5e-bab1-60e05198f181)
+
+Filtered : akses dibatasi suatu rule
+Closed : akses dibuka namun tidak ada aplikasi yang berjalan pada port tersebut
+
+# Soal 3
+> Kepala Suku North Area meminta kalian untuk membatasi DHCP dan DNS Server hanya dapat dilakukan ping oleh maksimal 3 device secara bersamaan, selebihnya akan di drop.
+```
+iptables -I INPUT -p icmp -m connlimit --connlimit-above 3 --connlimit-mask 0 -j DROP
+iptables -I INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+```
+Menggunakana icmp yaitu jenis akses yang digunakan saat melakukan ping. Jika melebihi 3 connection maka akan didrop
+![Screenshot (73)](https://github.com/reynoldgithub/Jarkom-Modul-5-IT22-2023/assets/87769109/3a08d0b7-49cc-4bd5-81d3-a47e958bd58a)
+
+# Soal 4
+> Lakukan pembatasan sehingga koneksi SSH pada Web Server hanya dapat dilakukan oleh masyarakat yang berada pada GrobeForest.
+```
+apt install openssh-server -y
+service ssh start
+iptables -A INPUT -p tcp --dport 22 -s 192.244.8.0/22 -j ACCEPT
+iptables -A INPUT -p tcp --dport 22 -j DROP
+```
+Memberikan batasan source ip dengan subnet GrobeForest!
+[Uploading Screenshot (74).png…]()
+
+# Soal 5
+> Selain itu, akses menuju WebServer hanya diperbolehkan saat jam kerja yaitu Senin-Jumat pada pukul 08.00-16.00.
+```
+iptables -A INPUT -m time --timestart 08:00 --timestop 16:00 --weekdays Mon,Tue,Wed,Thu,Fri -j ACCEPT
+iptables -A INPUT -j REJECT
+```
+Membatasi akses pada jam 08.00 - 16.00 dan 5 hari weekend
+Gunakan command `date --set' untuk merubah current datetime
+![Screenshot (75)](https://github.com/reynoldgithub/Jarkom-Modul-5-IT22-2023/assets/87769109/ce31ece7-621f-464f-8bd5-e7d2d4007450)
+
+
 
