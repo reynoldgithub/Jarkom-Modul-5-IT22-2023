@@ -1,4 +1,10 @@
 # Jarkom-Modul-5-IT22-2023
+## Kelompok IT22
+| Nama | NRP | 
+|---|---|
+| Reynold Putra Merdeka | 5027211034 | 
+| Rakha Aldo Nirwasita | 5027211054 | 
+
 
 # First Configuration
 ## Subnetting and Routing
